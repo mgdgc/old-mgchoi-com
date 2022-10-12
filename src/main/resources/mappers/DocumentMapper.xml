@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xyz.ridsoft.ridsoft.dao.DocumentMapper">
+
+    <select id="getDocuments" resultType="Document">
+        select *
+        from document
+        where hidden = false
+        order by touch desc;
+    </select>
+
+    <select id="getDocumentById" parameterType="integer" resultType="Document">
+        select *
+        from document
+        where docId = #{docId};
+    </select>
+
+    <select id="getDeletedDocuments" resultType="Document">
+        select *
+        from document
+        where hidden = true
+        order by touch desc;
+    </select>
+
+    <select id="getDocumentsByCategory" parameterType="int" resultType="Document">
+        select *
+        from document
+        where catId = #{catId}
+          and hidden = false
+        order by touch desc;
+    </select>
+
+    <insert id="insertDocument" parameterType="Document">
+        insert into document(userId, catId, title, `desc`, content, coverImg, tag, github, hidden)
+        values (#{userId}, #{catId}, #{title}, #{desc}, #{content}, #{coverImg}, #{tag}, #{github}, false);
+    </insert>
+
+    <delete id="deleteDocumentPermanently" parameterType="integer">
+        delete
+        from document
+        where docId = #{docId};
+    </delete>
+
+    <update id="deleteDocument" parameterType="integer">
+        update document
+        set hidden = true
+        where docId = #{docId};
+    </update>
+
+    <update id="restoreDocument" parameterType="integer">
+        update document
+        set hidden = false
+        where docId = #{docId};
+    </update>
+
+    <update id="updateDocument" parameterType="Document">
+        update document
+        set catId   = #{catId},
+            title   = #{title},
+            `desc`  = #{desc},
+            content = #{content}
+        where docId = #{docId};
+    </update>
+
+    <update id="touchDocument" parameterType="integer">
+        update document
+        set touch = now()
+        where docId = #{docId};
+    </update>
+
+</mapper>

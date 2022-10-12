@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xyz.ridsoft.ridsoft.dao.ActivityMapper">
+
+    <select id="selectActivities" resultType="Activity">
+        select *
+        from ridsoft.activity
+        order by touch desc;
+    </select>
+
+    <select id="selectPrizes" resultType="Activity">
+        select *
+        from ridsoft.activity
+        where prize is not null
+        order by touch desc;
+    </select>
+
+    <select id="selectActivity" resultType="Activity">
+        select *
+        from ridsoft.activity
+        where activityId = #{activityId}
+        order by touch desc;
+    </select>
+
+    <insert id="insertActivity">
+        insert into ridsoft.activity(activityId, activityName, outside, `date`, prize)
+        values (#{activityId}, #{activityName}, #{outside}, #{date}, #{prize});
+    </insert>
+
+    <update id="updateActivity" parameterType="Activity">
+        update ridsoft.activity
+        set activityName = #{activityName},
+            outside      = #{outside},
+            `date`       = #{date},
+            prize        = #{prize},
+            touch        = now()
+        where activityId = #{activityId};
+    </update>
+
+    <update id="touchActivity" parameterType="integer">
+        update ridsoft.activity
+        set touch = now()
+        where activityId = #{activityId};
+    </update>
+
+    <delete id="deleteActivity" parameterType="integer">
+        delete
+        from ridsoft.activity
+        where activityId = #{activityId};
+    </delete>
+
+</mapper>

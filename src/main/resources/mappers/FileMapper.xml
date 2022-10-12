@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xyz.ridsoft.ridsoft.dao.FileMapper">
+
+    <select id="getFiles" resultType="FileVO">
+        select *
+        from file
+        order by fileId desc;
+    </select>
+
+    <select id="getFileById" resultType="FileVO">
+        select *
+        from file
+        where fileId = #{fileId}
+        order by fileId desc;
+    </select>
+
+    <select id="getFilesByUserId" parameterType="string" resultType="FileVO">
+        select *
+        from file
+        where userId = #{userId}
+        order by fileId desc;
+    </select>
+
+    <select id="getFilesByName" parameterType="string" resultType="FileVO">
+        select *
+        from file
+        where fileName = #{fileName}
+        order by created desc;
+    </select>
+
+    <insert id="insertFile" parameterType="FileVO">
+        insert into file (userId, fileName)
+        VALUES (#{userId}, #{fileName});
+    </insert>
+
+    <delete id="deleteFile" parameterType="integer">
+        delete
+        from file
+        where fileId = #{fileId};
+    </delete>
+
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xyz.ridsoft.ridsoft.dao.SkillMapper">
+
+    <select id="getSkillGroups" resultType="SkillGroup">
+        select *
+        from skill_group;
+    </select>
+
+    <select id="getSkillGroupById" parameterType="integer" resultType="SkillGroup">
+        select *
+        from skill_group
+        where skillGroupId = #{skillGroupId};
+    </select>
+
+    <select id="getSkillGroupByName" parameterType="string" resultType="SkillGroup">
+        select *
+        from skill_group
+        where name = #{name};
+    </select>
+
+    <insert id="insertSkillGroup" parameterType="SkillGroup">
+        insert into skill_group(name)
+        values (#{name});
+    </insert>
+
+    <update id="updateSkillGroup" parameterType="SkillGroup">
+        update skill_group
+        set name = #{name}
+        where skillGroupId = #{skillGroupId};
+    </update>
+
+    <delete id="deleteSkillGroup" parameterType="integer">
+        delete
+        from skill_group
+        where skillGroupId = #{skillGroupId};
+    </delete>
+
+    <select id="getSkills" resultType="Skill">
+        select *
+        from skill;
+    </select>
+
+    <select id="getSkillsByGroup" parameterType="integer" resultType="Skill">
+        select *
+        from skill
+        where `group` = ${skillGroupId};
+    </select>
+
+    <select id="getSkillByName" parameterType="string" resultType="Skill">
+        select *
+        from skill
+        where skillName = #{skillName};
+    </select>
+
+    <insert id="insertSkill" parameterType="Skill">
+        insert into skill (`group`, skillName, icon, `year`, `level`, `desc`)
+        VALUES (#{skillGroupId}, #{skillName}, #{icon}, #{year}, #{level}, #{desc});
+    </insert>
+
+    <delete id="deleteSkill" parameterType="integer">
+        delete
+        from skill
+        where skillId = #{skillId};
+    </delete>
+
+    <update id="updateSkill" parameterType="Skill">
+        update skill
+        set skillName = #{skillName},
+            `year`    = #{year},
+            `level`   = #{level},
+            `desc`    = #{desc}
+        where skillId = #{skillId};
+    </update>
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xyz.ridsoft.ridsoft.dao.CategoryMapper">
+
+    <select id="getCategories" resultType="Category">
+        select *
+        from category;
+    </select>
+
+    <select id="getCategory" parameterType="integer" resultType="Category">
+        select *
+        from category
+        where catId = #{catId};
+    </select>
+
+    <insert id="insertCategory" parameterType="Category">
+        insert into category(title)
+        values (#{title});
+    </insert>
+
+</mapper>
