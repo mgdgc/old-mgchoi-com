@@ -10,6 +10,7 @@
     --text-tertiary: rgba(0, 0, 0, 0.4);
     --shadow-secondary-dark: #ccced1;
     --shadow-secondary-light: #ffffff;
+    --text-light: rgba(255, 255, 255, 0.85)
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +23,7 @@
         --text-tertiary: rgba(255, 255, 255, 0.4);
         --shadow-secondary-dark: #0a0b0c;
         --shadow-secondary-light: #2a2d30;
+        --text-light: rgba(0, 0, 0, 0.9)
     }
 }
 
@@ -71,6 +73,26 @@
     text-shadow: 1px 1px 4px rgba(100, 60, 255, 0.2),
     1px 1px 6px rgba(13, 170, 255, 0.2),
     1px 1px 8px rgba(26, 75, 176, 0.2);
+}
+
+.r-text-bg-yellow {
+    background-color: rgba(255, 214, 10);
+    color: white;
+}
+
+.r-text-bg-bright-yellow {
+    background-color: rgba(255, 230, 32);
+    color: white;
+}
+
+.r-text-bg-gray {
+    background-color: rgba(209, 209, 214);
+    color: dimgray;
+}
+
+.r-text-bg-brown {
+    background-color: rgba(172, 142, 104);
+    color: white;
 }
 
 /* Override Bootstrap */

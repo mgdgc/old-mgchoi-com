@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.servlet.ModelAndView
 import xyz.ridsoft.ridsoft.constants.SessionKey
 import xyz.ridsoft.ridsoft.error.Errors
 import xyz.ridsoft.ridsoft.service.UserService
@@ -24,6 +25,7 @@ class UserController {
 
     @Value("\${adminId}")
     private lateinit var adminId: String
+
     @Value("\${adminPw}")
     private lateinit var adminPw: String
 
@@ -50,7 +52,7 @@ class UserController {
 
         if (user.userPw == PasswordTool.encryptPassword(userPw, user.salt)) {
             request.session.setAttribute(SessionKey.KEY_USER, user)
-            response.sendRedirect("/")
+            response.sendRedirect("/admin")
         } else {
             request.session.setAttribute(SessionKey.KEY_ERROR, Errors.Companion.UserError.wrongPassword)
             response.sendRedirect("/error")
@@ -65,7 +67,7 @@ class UserController {
         response: HttpServletResponse
     ) {
         request.session.invalidate()
-        response.sendRedirect("/")
+        response.sendRedirect("/login")
     }
 
     @PostMapping("/register")
@@ -89,6 +91,28 @@ class UserController {
         userService.insertUser(user)
 
         response.sendRedirect("/login")
+    }
+
+    @GetMapping("/admin")
+    public fun admin(locale: Locale, request: HttpServletRequest, response: HttpServletResponse): ModelAndView? {
+        val sessionUser = request.session.getAttribute(SessionKey.KEY_USER) as? User
+
+        if (sessionUser == null) {
+            request.session.setAttribute(SessionKey.KEY_ERROR, Errors.Companion.UserError.notSignedIn)
+            response.sendRedirect("/error-page")
+            return null
+        } else {
+            val user = userService.getUser(sessionUser.userId)
+            if (user?.userId != sessionUser.userId || user.userPw != sessionUser.userPw) {
+                request.session.setAttribute(SessionKey.KEY_ERROR, Errors.Companion.UserError.notAuthorized)
+                response.sendRedirect("/error-page")
+                return null
+            }
+        }
+
+        val mav = ModelAndView("admin")
+
+        return mav
     }
 
 }

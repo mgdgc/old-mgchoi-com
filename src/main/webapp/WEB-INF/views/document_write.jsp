@@ -22,29 +22,35 @@
         <tr>
             <th>Project Name</th>
             <td><input type="text" name="title" placeholder="Project Name"></td>
+            <td></td>
         </tr>
         <tr>
             <th>간략한 설명</th>
             <td><input type="text" name="desc" placeholder="간략한 설명"></td>
+            <td></td>
         </tr>
         <tr>
             <th>Project 설명</th>
             <td><textarea name="content" placeholder="Project 설명"></textarea></td>
+            <td></td>
         </tr>
         <tr>
             <th>Cover Image</th>
             <td><input type="text" name="coverImg" placeholder="fileId"></td>
+            <td><a href="/file">파일</a></td>
         </tr>
         <tr>
             <th>Tag</th>
             <td><input type="text" name="tag" placeholder="Tag (#tag1 #tag2 ...)"></td>
+            <td></td>
         </tr>
         <tr>
             <th>Github</th>
             <td><input type="text" name="github" placeholder="Github URL"></td>
+            <td></td>
         </tr>
         <tr>
-            <td colspan="2"><input type="submit"></td>
+            <td colspan="3"><input type="submit"></td>
         </tr>
     </table>
 </form>

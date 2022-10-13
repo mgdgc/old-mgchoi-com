@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
 import xyz.ridsoft.ridsoft.constants.SessionKey
 import xyz.ridsoft.ridsoft.error.Errors
 import xyz.ridsoft.ridsoft.service.CategoryService
 import xyz.ridsoft.ridsoft.service.DocumentService
+import xyz.ridsoft.ridsoft.service.UserService
 import xyz.ridsoft.ridsoft.vo.Admin
 import xyz.ridsoft.ridsoft.vo.Category
 import xyz.ridsoft.ridsoft.vo.Document
@@ -29,6 +31,9 @@ class ProjectController {
 
     @Autowired
     private lateinit var catService: CategoryService
+
+    @Autowired
+    private lateinit var userService: UserService
 
     @Value("\${adminId}")
     private lateinit var adminId: String
@@ -68,10 +73,11 @@ class ProjectController {
         return mav
     }
 
-    @GetMapping("/project/detail/{docId}")
+    @GetMapping("/project/{catId}/{docId}")
     public fun showProject(
         locale: Locale,
         request: HttpServletRequest,
+        @PathVariable("catId") catId: Int,
         @PathVariable("docId") docId: Int,
         response: HttpServletResponse
     ): ModelAndView? {
@@ -89,6 +95,27 @@ class ProjectController {
         mav.addObject("document", doc)
 
         return mav
+    }
+
+    @ResponseBody
+    @GetMapping("/api/document/{docId}")
+    public fun getDocument(
+        locale: Locale,
+        request: HttpServletRequest,
+        @PathVariable("docId") docId: Int,
+        response: HttpServletResponse
+    ): Document? {
+        val mav = ModelAndView("project_detail")
+
+        val doc = docService.getDocumentById(docId)
+
+        if (doc == null) {
+            request.session.setAttribute(SessionKey.KEY_ERROR, Errors.Companion.DatabaseError.notExists)
+            response.sendRedirect("/error-page")
+            return null
+        }
+
+        return doc
     }
 
     @GetMapping("/project/category")
@@ -198,5 +225,64 @@ class ProjectController {
 
     }
 
+    @GetMapping("/project/{catId}/documents")
+    public fun manageDocuments(
+        locale: Locale,
+        request: HttpServletRequest,
+        @PathVariable("catId") catId: Int,
+        response: HttpServletResponse
+    ): ModelAndView? {
+        val sessionUser = request.session.getAttribute(SessionKey.KEY_USER) as? User
+
+        if (sessionUser == null) {
+            request.session.setAttribute(SessionKey.KEY_ERROR, Errors.Companion.UserError.notSignedIn)
+            response.sendRedirect("/error-page")
+            return null
+        } else {
+            val user = userService.getUser(sessionUser.userId)
+            if (user?.userId != sessionUser.userId || user.userPw != sessionUser.userPw) {
+                request.session.setAttribute(SessionKey.KEY_ERROR, Errors.Companion.UserError.notAuthorized)
+                response.sendRedirect("/error-page")
+                return null
+            }
+        }
+
+        val mav = ModelAndView("manage_document")
+
+        val documents = docService.getDocumentsByCategory(catId)
+
+        mav.addObject("documents", documents)
+
+        return mav
+
+    }
+
+    @GetMapping("/project/{catId}/{docId}/touch")
+    public fun touchDocument(
+        locale: Locale,
+        request: HttpServletRequest,
+        @PathVariable("catId") catId: Int,
+        @PathVariable("docId") docId: Int,
+        response: HttpServletResponse
+    ) {
+        val sessionUser = request.session.getAttribute(SessionKey.KEY_USER) as? User
+
+        if (sessionUser == null) {
+            request.session.setAttribute(SessionKey.KEY_ERROR, Errors.Companion.UserError.notSignedIn)
+            response.sendRedirect("/error-page")
+            return
+        } else {
+            val user = userService.getUser(sessionUser.userId)
+            if (user?.userId != sessionUser.userId || user.userPw != sessionUser.userPw) {
+                request.session.setAttribute(SessionKey.KEY_ERROR, Errors.Companion.UserError.notAuthorized)
+                response.sendRedirect("/error-page")
+                return
+            }
+        }
+
+        docService.touchDocument(docId)
+
+        response.sendRedirect("/project/${catId}/documents")
+    }
 
 }

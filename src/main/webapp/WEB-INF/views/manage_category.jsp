@@ -26,7 +26,7 @@
 </form>
 
 <hr>
-<h3>파일 리스트</h3>
+<h3>카테고리 리스트</h3>
 <table>
     <thead>
     <tr>
@@ -37,9 +37,9 @@
     </thead>
     <c:forEach items="${categories}" var="category">
         <tr>
-            <th><c:out value="${category.getCatId()}"/></th>
-            <th><c:out value="${category.getTitle()}"/></th>
-            <th><a href="/project/${category.getCatId()}/write">글 작성</a></th>
+            <td><c:out value="${category.getCatId()}"/></td>
+            <td><a href="/project/${category.getCatId()}/documents"><c:out value="${category.getTitle()}"/></a></td>
+            <td><a href="/project/${category.getCatId()}/write">글 작성</a></td>
         </tr>
     </c:forEach>
 </table>

@@ -44,11 +44,14 @@
     <meta name="theme-color" content="#ffffff">
 
     <!--	Bootstrap	-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
             crossorigin="anonymous"></script>
+
+    <%--  JQuery  --%>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
 
     <!--  My Stylesheet  -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/style/r_style.css">
@@ -105,8 +108,10 @@
                 <img src="/image/${p.getCoverImg()}" width="100%" alt="cover image">
                 <span class="mt-3 ms-2 me-2 mb-3 r-text-secondary"><c:out value="${p.getDesc()}"/></span>
                 <div class="align-self-end mt-auto">
-                        <%--                    <a class="btn btn-outline-primary" href="/project/detail/${p.getDocId()}" target="_blank">자세히 보기</a>--%>
-                    <a class="btn btn-outline-primary" href="${p.getGithub()}" target="_blank">자세히 보기</a>
+                    <button class="btn btn-outline-primary"
+                            data-bs-toggle="modal" data-bs-target="#prjModal" onclick="getDocument(${p.getDocId()})">
+                        자세히 보기
+                    </button>
                 </div>
             </div>
         </c:forEach>
@@ -119,5 +124,60 @@
 </div>
 </div>
 
+<!-- Scrollable modal -->
+<div class="modal fade" id="prjModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content r-bg-primary">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="prjModelTitle">Modal title</h1>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            <div class="modal-body">
+                <img src="" id="prjModalImg" width="100%"/>
+                <div class="container" id="prjModalBody">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-primary" id="prjModalBtnGithub">Github 보기</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var modal = document.getElementById('prjModal');
+    var title = document.getElementById('prjModelTitle');
+    var body = document.getElementById('prjModalBody');
+
+    modal.addEventListener('shown.bs.modal', () => {
+
+    });
+
+    function getDocument(docId) {
+        $.ajax ({
+            url	: "/api/document/" + docId,
+            type	: "GET",
+            async : true,
+            timeout : 3000,
+            beforeSend  : function () {
+                $("#prjModelTitle").text("");
+                $("#prjModalBody").text("");
+            },
+            success : function(data, status, xhr) {
+                $("#prjModelTitle").text(data.title);
+                $("#prjModalImg").attr("src", "/image/" + data.coverImg)
+                $("#prjModalBody").text(data.content);
+                $("#prjModalBtnGithub").attr("href", data.github)
+            },
+            error	: function(xhr, status, error) {
+                $("#prjModelTitle").text("오류");
+                $("#prjModalBody").text("프로젝트를 불러올 수 없습니다.");
+            }
+        });
+    }
+</script>
 </body>
 </html>

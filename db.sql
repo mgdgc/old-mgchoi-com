@@ -64,7 +64,10 @@ create table ridsoft.activity
     activityId   integer unsigned primary key not null auto_increment,
     activityName varchar(20)                  not null,
     outside      boolean                      not null,
-    `date`       date                         not null default now(),
+    `year`       integer                      not null,
+    `month`      integer                      not null,
+    endYear      integer                               default null,
+    endMonth     integer                               default null,
     prize        varchar(20),
     touch        datetime                     not null default now()
 );

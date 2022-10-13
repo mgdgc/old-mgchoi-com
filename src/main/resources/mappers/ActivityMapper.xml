@@ -8,6 +8,7 @@
     <select id="selectActivities" resultType="Activity">
         select *
         from ridsoft.activity
+        where prize is null
         order by touch desc;
     </select>
 
