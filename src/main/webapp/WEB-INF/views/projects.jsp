@@ -135,7 +135,7 @@
             </div>
             <div class="modal-body">
                 <img src="" id="prjModalImg" width="100%"/>
-                <div class="container" id="prjModalBody">
+                <div class="container mt-5" id="prjModalBody" style="white-space: pre-line;">
 
                 </div>
             </div>
