@@ -115,6 +115,8 @@
                 </div>
             </div>
         </c:forEach>
+        <div class="d-flex flex-column flex-fill col-5 col-lg-4 p-3 m-3">
+        </div>
     </div>
 </div>
 
