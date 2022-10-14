@@ -5,6 +5,12 @@
 
 <mapper namespace="xyz.ridsoft.ridsoft.dao.ActivityMapper">
 
+    <select id="selectAllActivities" resultType="Activity">
+        select *
+        from ridsoft.activity
+        order by touch desc;
+    </select>
+
     <select id="selectActivities" resultType="Activity">
         select *
         from ridsoft.activity
@@ -27,15 +33,18 @@
     </select>
 
     <insert id="insertActivity">
-        insert into ridsoft.activity(activityId, activityName, outside, `date`, prize)
-        values (#{activityId}, #{activityName}, #{outside}, #{date}, #{prize});
+        insert into ridsoft.activity(activityId, activityName, outside, `year`, `month`, `endYear`, `endMonth`, prize)
+        values (#{activityId}, #{activityName}, #{outside}, #{year}, #{month}, #{endYear}, #{endMonth}, #{prize});
     </insert>
 
     <update id="updateActivity" parameterType="Activity">
         update ridsoft.activity
         set activityName = #{activityName},
             outside      = #{outside},
-            `date`       = #{date},
+            `year`       = #{year},
+            `month`      = #{month},
+            `endYear`    = #{endYear},
+            `endMonth`   = #{endMonth},
             prize        = #{prize},
             touch        = now()
         where activityId = #{activityId};

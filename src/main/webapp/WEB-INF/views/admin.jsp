@@ -70,6 +70,7 @@
         <a class="list-group-item list-group-item-action" href="/project/category">Document</a>
         <a class="list-group-item list-group-item-action" href="/file">File</a>
         <a class="list-group-item list-group-item-action" href="/skill/group">Skill Group</a>
+        <a class="list-group-item list-group-item-action" href="/activity">Activity</a>
     </div>
 </div>
 

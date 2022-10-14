@@ -4,6 +4,7 @@ import xyz.ridsoft.ridsoft.vo.Activity
 
 interface ActivityService {
 
+    fun selectAllActivities(): List<Activity>
     fun selectActivities(): List<Activity>
     fun selectPrizes(): List<Activity>
     fun selectActivity(activityId: Int): Activity

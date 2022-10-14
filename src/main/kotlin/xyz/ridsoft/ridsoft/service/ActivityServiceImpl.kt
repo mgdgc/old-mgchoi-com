@@ -10,6 +10,9 @@ class ActivityServiceImpl : ActivityService {
 
     @Autowired
     private lateinit var mapper: ActivityMapper
+    override fun selectAllActivities(): List<Activity> {
+        return mapper.selectAllActivities()
+    }
 
     override fun selectActivities(): List<Activity> {
         return mapper.selectActivities()
