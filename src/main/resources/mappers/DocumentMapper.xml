@@ -9,7 +9,7 @@
         select *
         from document
         where hidden = false
-        order by touch desc;
+        order by touch;
     </select>
 
     <select id="getDocumentById" parameterType="integer" resultType="Document">
@@ -22,7 +22,7 @@
         select *
         from document
         where hidden = true
-        order by touch desc;
+        order by touch;
     </select>
 
     <select id="getDocumentsByCategory" parameterType="int" resultType="Document">
@@ -30,7 +30,7 @@
         from document
         where catId = #{catId}
           and hidden = false
-        order by touch desc;
+        order by touch;
     </select>
 
     <insert id="insertDocument" parameterType="Document">

@@ -150,14 +150,6 @@
 </div>
 
 <script type="text/javascript">
-    var modal = document.getElementById('prjModal');
-    var title = document.getElementById('prjModelTitle');
-    var body = document.getElementById('prjModalBody');
-
-    modal.addEventListener('shown.bs.modal', () => {
-
-    });
-
     function getDocument(docId) {
         $.ajax ({
             url	: "/api/document/" + docId,

@@ -71,6 +71,9 @@ class HomeController {
         val activities = activityService.selectActivities()
         mav.addObject("activities", activities)
 
+        val awards = activityService.selectPrizes()
+        mav.addObject("awards", awards)
+
         return mav
     }
 

@@ -54,6 +54,9 @@
             integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
             crossorigin="anonymous"></script>
 
+    <%--  JQuery  --%>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+
     <!--  My Stylesheet  -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/style/r_style.css">
 
@@ -144,8 +147,10 @@
                     <img src="/image/${p.getCoverImg()}" width="100%" alt="cover image">
                     <span class="mt-3 ms-2 me-2 mb-3 r-text-secondary"><c:out value="${p.getDesc()}"/></span>
                     <div class="align-self-end mt-auto">
-                            <%--                    <a class="btn btn-outline-primary" href="/project/detail/${p.getDocId()}" target="_blank">자세히 보기</a>--%>
-                        <a class="btn btn-outline-primary" href="${p.getGithub()}" target="_blank">자세히 보기</a>
+                        <button class="btn btn-outline-primary"
+                                data-bs-toggle="modal" data-bs-target="#prjModal" onclick="getDocument(${p.getDocId()})">
+                            자세히 보기
+                        </button>
                     </div>
                 </div>
             </c:forEach>
@@ -192,16 +197,16 @@
                     <br>
                     <span class="badge rounded-pill text-bg-light mt-2 fs-6 fw-normal">
                         <c:choose>
-                            <c:when test="${a.prize} == '대상'">
+                            <c:when test="${a.prize eq '대상'}">
                                 <span class="badge rounded-pill r-text-bg-bright-yellow m-1 fs-6 fw-normal">대상</span>
                             </c:when>
-                            <c:when test="${a.prize} == '금상'">
+                            <c:when test="${a.prize eq '금상'}">
                                 <span class="badge rounded-pill r-text-bg-yellow m-1 fs-6 fw-normal">금상</span>
                             </c:when>
-                            <c:when test="${a.prize} == '은상'">
+                            <c:when test="${a.prize eq '은상'}">
                                 <span class="badge rounded-pill r-text-bg-gray m-1 fs-6 fw-normal">은상</span>
                             </c:when>
-                            <c:when test="${a.prize} == '동상'">
+                            <c:when test="${a.prize eq '동상'}">
                                 <span class="badge rounded-pill r-text-bg-brown m-1 fs-6 fw-normal">동상</span>
                             </c:when>
                             <c:otherwise>
@@ -273,5 +278,53 @@
 
 </div>
 </div>
+
+<!-- Scrollable modal -->
+<div class="modal fade" id="prjModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content r-bg-primary">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="prjModelTitle">Modal title</h1>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            <div class="modal-body">
+                <img src="" id="prjModalImg" width="100%"/>
+                <div class="container mt-5" id="prjModalBody" style="white-space: pre-line;">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-primary" id="prjModalBtnGithub">Github 보기</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function getDocument(docId) {
+        $.ajax ({
+            url	: "/api/document/" + docId,
+            type	: "GET",
+            async : true,
+            timeout : 3000,
+            beforeSend  : function () {
+                $("#prjModelTitle").text("");
+                $("#prjModalBody").text("");
+            },
+            success : function(data, status, xhr) {
+                $("#prjModelTitle").text(data.title);
+                $("#prjModalImg").attr("src", "/image/" + data.coverImg)
+                $("#prjModalBody").text(data.content);
+                $("#prjModalBtnGithub").attr("href", data.github)
+            },
+            error	: function(xhr, status, error) {
+                $("#prjModelTitle").text("오류");
+                $("#prjModalBody").text("프로젝트를 불러올 수 없습니다.");
+            }
+        });
+    }
+</script>
 
 </body>
