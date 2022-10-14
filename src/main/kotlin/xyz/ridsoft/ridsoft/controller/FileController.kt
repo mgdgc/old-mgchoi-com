@@ -127,6 +127,11 @@ class FileController {
 
         val parts: Collection<Part> = request.parts
 
+        val path = File("${fileBaseLocation}/${user.userId}/")
+        if (!path.exists()) {
+            path.mkdirs()
+        }
+
         for (p in parts) {
             val insertVO = FileVO(user.userId, p.submittedFileName)
             fileService.insertFile(insertVO)
