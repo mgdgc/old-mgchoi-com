@@ -76,23 +76,27 @@
 }
 
 .r-text-bg-yellow {
-    background-color: rgba(255, 214, 10);
-    color: white;
+    background-color: rgba(255, 214, 10, 1);
+    --bs-badge-color: rgba(255, 214, 10, 1);
+    /*color: var(--text-light);*/
 }
 
 .r-text-bg-bright-yellow {
-    background-color: rgba(255, 230, 32);
-    color: white;
+    background-color: rgba(255, 230, 32, 1);
+    --bs-badge-color: rgba(255, 230, 32, 1);
+    /*color: var(--text-light);*/
 }
 
 .r-text-bg-gray {
-    background-color: rgba(209, 209, 214);
-    color: dimgray;
+    background-color: rgba(137, 137, 140, 1);
+    --bs-badge-color: rgba(137, 137, 140, 1);
+    /*color: black;*/
 }
 
 .r-text-bg-brown {
-    background-color: rgba(172, 142, 104);
-    color: white;
+    background-color: rgba(172, 142, 104, 1);
+    --bs-badge-color: rgba(172, 142, 104, 1);
+    /*color: var(--text-light);*/
 }
 
 /* Override Bootstrap */
