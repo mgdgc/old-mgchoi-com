@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta property="og:title" content="최명근 | MG Choi">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="${pageContext.request.contextPath}/resources/img/og.png">
+    <meta property="og:image" content="https://mgchoi.com/resources/img/og.png">
     <meta property="og:description" content="iOS, Android를 사랑하는 최명근입니다.">
     <title>MG Choi</title>
 
@@ -54,11 +54,11 @@
             integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
             crossorigin="anonymous"></script>
 
+    <!--  My Stylesheet  -->
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/style/r_style.css">
+
     <%--  JQuery  --%>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-
-    <!--  My Stylesheet  -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/style/r_style.css">
 
 </Head>
 
@@ -148,7 +148,8 @@
                     <span class="mt-3 ms-2 me-2 mb-3 r-text-secondary"><c:out value="${p.getDesc()}"/></span>
                     <div class="align-self-end mt-auto">
                         <button class="btn btn-outline-primary"
-                                data-bs-toggle="modal" data-bs-target="#prjModal" onclick="getDocument(${p.getDocId()})">
+                                data-bs-toggle="modal" data-bs-target="#prjModal"
+                                onclick="getDocument(${p.getDocId()})">
                             자세히 보기
                         </button>
                     </div>
@@ -195,28 +196,28 @@
                         </c:if>
                     </h3>
                     <br>
-                    <span class="badge rounded-pill text-bg-light mt-2 fs-6 fw-normal">
+                    <span class="badge rounded-pill text-bg-light mt-2 fs-6 fw-normal mw-100 overflow-scroll">
                         <c:choose>
                             <c:when test="${a.prize eq '대상'}">
-                                <span class="badge rounded-pill r-text-bg-bright-yellow m-1 fs-6 fw-normal">대상</span>
+                                <span class="badge rounded-pill m-1 fs-6" style="background-color: rgba(255, 230, 32, 1);">대상</span>
                             </c:when>
                             <c:when test="${a.prize eq '금상'}">
-                                <span class="badge rounded-pill r-text-bg-yellow m-1 fs-6 fw-normal">금상</span>
+                                <span class="badge rounded-pill m-1 fs-6" style="background-color: rgba(255, 214, 10, 1);">금상</span>
                             </c:when>
                             <c:when test="${a.prize eq '은상'}">
-                                <span class="badge rounded-pill r-text-bg-gray m-1 fs-6 fw-normal">은상</span>
+                                <span class="badge rounded-pill m-1 fs-6" style="background-color: rgba(137, 137, 140, 1);">은상</span>
                             </c:when>
                             <c:when test="${a.prize eq '동상'}">
-                                <span class="badge rounded-pill r-text-bg-brown m-1 fs-6 fw-normal">동상</span>
+                                <span class="badge rounded-pill m-1 fs-6" style="background-color: rgba(172, 142, 104, 1);">동상</span>
                             </c:when>
                             <c:otherwise>
-                                <span class="badge rounded-pill r-text-bg-brown m-1 fs-6 fw-normal">
+                                <span class="badge rounded-pill m-1 fs-6" style="background-color: rgba(172, 142, 104, 1);">
                                     <c:out value="${a.prize}"/>
                                 </span>
                             </c:otherwise>
                         </c:choose>
-                    <c:out value="${a.activityName}"/>
-                </span>
+                        <c:out value="${a.activityName}"/>
+                    </span>
                 </div>
             </c:forEach>
         </div>
@@ -304,22 +305,22 @@
 
 <script type="text/javascript">
     function getDocument(docId) {
-        $.ajax ({
-            url	: "/api/document/" + docId,
-            type	: "GET",
-            async : true,
-            timeout : 3000,
-            beforeSend  : function () {
+        $.ajax({
+            url: "/api/document/" + docId,
+            type: "GET",
+            async: true,
+            timeout: 3000,
+            beforeSend: function () {
                 $("#prjModelTitle").text("");
                 $("#prjModalBody").text("");
             },
-            success : function(data, status, xhr) {
+            success: function (data, status, xhr) {
                 $("#prjModelTitle").text(data.title);
                 $("#prjModalImg").attr("src", "/image/" + data.coverImg)
                 $("#prjModalBody").text(data.content);
                 $("#prjModalBtnGithub").attr("href", data.github)
             },
-            error	: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 $("#prjModelTitle").text("오류");
                 $("#prjModalBody").text("프로젝트를 불러올 수 없습니다.");
             }
